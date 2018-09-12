@@ -33,7 +33,7 @@ run:
 		./flowqlet -token b3762fd5acdce6a77c0894160ede28c93d25a5e0
 
 
-		API /api/v1/instance/<owner id>/<scenario id , must in scenario directory>
+		#API /api/v1/instance/<owner id>/<scenario id , must in scenario directory>
 
 		curl -v -X POST http://localhost:8801/api/v1/instance/f20030f4b7f4c64aa271236f124e77384a83dcf5/deploying-first-container
 
