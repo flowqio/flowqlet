@@ -17,17 +17,18 @@ import (
 
 func main() {
 
-	port := flag.Int("p", 8800, "listen port")
-	host := flag.String("h", "localhost", "listen address")
+	port := flag.Int("port", 8800, "listen port")
+	host := flag.String("host", "localhost", "listen address")
 	nodeID := flag.String("n", "env1", "nodeID")
 	token := flag.String("token", "", "join token")
-
+	etcdEndpoint := flag.String("etcdurl", "127.0.0.1:2379", "etcd endporint")
 	flag.Parse()
 
 	if *token == "" {
 		fmt.Println("join token required.")
 		return
 	}
+	service.InitEtcdClient(*etcdEndpoint)
 
 	go service.OnBoard(*token, *nodeID, fmt.Sprintf("%s:%d", *host, *port))
 
