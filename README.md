@@ -25,7 +25,8 @@ flowqlet require:
 
 run:
 
-	```
+
+    ```bash
 
 		./flowqlet -token b3762fd5acdce6a77c0894160ede28c93d25a5e0
 
