@@ -1,5 +1,5 @@
 # flowqlet
-flowqlet is simple component control lab environment
+flowqlet is simple component control lab environment,compatibility docker-compose v2.0 (forck docker/libcompose add v2.2 some feature)
 
 
 flowqlet provide :
@@ -96,3 +96,8 @@ run:
 
 	
 
+## Reference
+
+ * [docker-compose](https://docs.docker.com/compose/)
+ * [libcompose](https://github.com/docker/libcompose)
+ 
