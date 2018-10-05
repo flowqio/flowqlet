@@ -24,6 +24,58 @@ flowqlet require:
 
   git clone https://github.com/flowqio/sceanrio 
 
+  directory like this
+
+  ```bash
+	[opc@cloud-node03 flowq]$ tree
+.
+├── flowqlet
+├── flowq.log
+├── instances
+├── scenario
+│   ├── deploying-first-container
+│   │   ├── docker-compose-cmd.yml
+│   │   ├── docker-compose.yml
+│   │   ├── index.json
+│   │   ├── intro.md
+│   │   ├── step1.md
+│   │   ├── step2.md
+│   │   ├── step3.md
+│   │   ├── step4.md
+│   │   ├── step5.md
+│   │   └── step6.md
+│   ├── flask-startup
+│   │   ├── docker-compose.yml
+│   │   ├── index.json
+│   │   ├── intro.md
+│   │   ├── step1.md
+│   │   └── step2.md
+│   ├── git-startup
+│   │   ├── docker-compose.yml
+│   │   ├── index.json
+│   │   ├── intro.md
+│   │   ├── step1.md
+│   │   └── step2.md
+│   ├── k8s-base-command
+│   │   ├── docker-compose.yml
+│   │   ├── index.json
+│   │   ├── intro.md
+│   │   ├── step1.md
+│   │   └── step2.md
+│   ├── nginx-overview
+│   │   ├── docker-compose.yml
+│   │   ├── index.json
+│   │   ├── intro.md
+│   │   ├── step1.md
+│   │   └── step2.md
+│   └── scipy-notebook
+│       ├── docker-compose.yml
+│       ├── index.json
+│       ├── intro.md
+│       └── step1.md
+├── startFlowqlet.sh
+
+  ```  
 
 run:
 
