@@ -22,3 +22,12 @@ func InitLog() {
 
 	log.SetFormatter(&log.TextFormatter{FullTimestamp: true, TimestampFormat: "2006-01-02 15:04:05"})
 }
+
+var updateServerEndpoint = ""
+
+func UpdateServerEndpoint(endpoint ...string) string {
+	if len(endpoint) > 0 {
+		updateServerEndpoint = endpoint[0]
+	}
+	return updateServerEndpoint
+}
