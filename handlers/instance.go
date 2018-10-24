@@ -140,6 +140,14 @@ func ComposeUP(w http.ResponseWriter, r *http.Request) {
 
 	log.Debugf("CreateInstance, oid :%s", oid)
 
+	volumeReady := service.PrepareVolume(oid)
+
+	if volumeReady == false {
+		msg, _ := json.Marshal(map[string]string{"msg": "volume prepare failed", "status": "500"})
+		http.Error(w, string(msg), http.StatusBadRequest)
+		return
+	}
+
 	instances, err := service.ComposeUP(oid, scenario)
 	if err != nil {
 		msg, _ := json.Marshal(map[string]string{"msg": err.Error(), "status": "400"})
