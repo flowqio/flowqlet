@@ -22,6 +22,8 @@ func main() {
 	nodeID := flag.String("n", "env1", "nodeID")
 	token := flag.String("token", "", "join token")
 	etcdEndpoint := flag.String("etcdurl", "127.0.0.1:2379", "etcd endporint")
+	updateserver := flag.String("updateserver", "", "update web server endporint")
+
 	flag.Parse()
 
 	if *token == "" {
@@ -29,6 +31,10 @@ func main() {
 		return
 	}
 	service.InitEtcdClient(*etcdEndpoint)
+
+	service.UpdateServerEndpoint(*updateserver)
+
+	log.Printf("UpdateServer: %s", service.UpdateServerEndpoint())
 
 	go service.OnBoard(*token, *nodeID, fmt.Sprintf("%s:%d", *host, *port))
 
