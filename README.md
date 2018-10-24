@@ -8,18 +8,18 @@ flowqlet provide :
 1.  repaire scenario loading
 
 	 container overlay network create
-	 
+	
 	 container instance create
-	 
+	
 	 container instance clear
-	 
+	
 2. provide websocket access container
 
 
 
 flowqlet require:
 
-	
+
   etcd server , must be have one token , "/flowq/token", next version flowqlet will used this token check all API payload sign message.
 
   git clone https://github.com/flowqio/sceanrio 
@@ -75,13 +75,15 @@ flowqlet require:
 │       └── step1.md
 ├── startFlowqlet.sh
 
-  ```  
+  ```
 
 run:
 
 
    ```bash
 
+		etcdctl set /flowq/token "b3762fd5acdce6a77c0894160ede28c93d25a5e0"
+		
 		./flowqlet -token b3762fd5acdce6a77c0894160ede28c93d25a5e0
 
 
@@ -94,10 +96,9 @@ run:
 	
    ```
 
-	
+​	
 
 ## Reference
 
  * [docker-compose](https://docs.docker.com/compose/)
  * [libcompose](https://github.com/docker/libcompose)
- 
