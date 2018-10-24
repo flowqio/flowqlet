@@ -23,10 +23,12 @@ import (
 	"strings"
 	"time"
 
+	"docker.io/go-docker/api/types/volume"
 	log "github.com/sirupsen/logrus"
 
 	client "docker.io/go-docker"
 	"docker.io/go-docker/api/types"
+	"docker.io/go-docker/api/types/filters"
 )
 
 var c *client.Client
@@ -132,6 +134,32 @@ func CreateExecAttachConnection(ctx context.Context, id, cmd string) (*types.Hij
 
 	return &conn, nil
 
+}
+
+func PrepareVolume(uid string) bool {
+
+	filter := filters.NewArgs(filters.Arg("name", uid))
+
+	body, err := c.VolumeList(context.Background(), filter)
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+	if len(body.Volumes) == 0 {
+		log.Debugf("volume %s need be created", uid)
+
+		option := volume.VolumesCreateBody{}
+		option.Name = uid //name
+		//option.Driver = "rexray/s3fs" //Driver
+
+		_, err := c.VolumeCreate(context.Background(), option)
+		if err != nil {
+			log.Println(err)
+			return false
+		}
+		log.Debugf("volume %s create success", uid)
+	}
+	return true
 }
 
 // func NewInstance(uid string, backend model.Backend) (*Instance, error) {
