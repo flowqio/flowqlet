@@ -53,6 +53,8 @@ func InitRouter() *mux.Router {
 	api.HandleFunc("/instance/{oid}/{sid}", handlers.ComposeUP).Methods("POST")
 	api.HandleFunc("/instance/{oid}/{sid}", handlers.ComposeDown).Methods("DELETE")
 
+	api.HandleFunc("/scenario/{sid}", handlers.UpdateScenario).Methods("PUT")
+
 	//old code
 	//api.HandleFunc("/instance/{oid}", handlers.CreateInstance).Methods("POST")
 	//api.HandleFunc("/instance/{oid}/{cid}", handlers.ClearInstance).Methods("DELETE")
