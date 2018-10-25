@@ -1,6 +1,7 @@
 #!/bin/bash
 
-
+#author stevensu1977
+#copyright@flowq.io
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
