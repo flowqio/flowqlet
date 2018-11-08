@@ -100,7 +100,7 @@ connect container through flowqlet
 
 ```bas
 #flowqlet provide websocket  , you can use normal ws client connect container
-ws://<flowqlet ip:port>//ws/{oid}/{cid}
+ws://<flowqlet ip:port>/ws/{oid}/{cid}
 ```
 
 
