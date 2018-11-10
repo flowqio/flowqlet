@@ -22,7 +22,7 @@ import (
 	"github.com/coreos/etcd/clientv3"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/flowqio/flowqlet/model"
+	"github.com/flowqio/flowqlet/config"
 )
 
 var serviceRoot = "/flowq/env"
@@ -33,11 +33,14 @@ var apiToken = ""
 
 var REQUEST_TIMEOUT = 5
 
-var nodeConfig *model.FlowqLetConfig
+var nodeConfig *config.FlowqletConfig
 
-func GetFlowqLetConfig() model.FlowqLetConfig {
+//GetFlowLetConfig return config.FlowqletConfig
+func GetFlowqLetConfig() config.FlowqletConfig {
 	return *nodeConfig
 }
+
+//OnBoard flowqlet will be put nodeinfo to etcdserver
 func OnBoard(token string, nodeID string, letInfo string) error {
 
 	cli := GetEtcdClient()
@@ -84,8 +87,6 @@ func OnBoard(token string, nodeID string, letInfo string) error {
 		return err
 	}
 
-	nodeConfig = &model.FlowqLetConfig{NodeID: nodeID, Addr: letInfo, Token: token}
-
 	for {
 		select {
 		case <-cli.Ctx().Done():
@@ -96,7 +97,7 @@ func OnBoard(token string, nodeID string, letInfo string) error {
 				OnBoard(token, nodeID, letInfo)
 				return nil
 			} else {
-				//log.Debugf("Recv reply from service: %s, ttl:%d", nodeID, ka.TTL)
+				log.Debugf("Recv reply from service: %s, ttl:%d", nodeID, ka.TTL)
 			}
 		}
 	}
