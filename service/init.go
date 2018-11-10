@@ -1,26 +1,21 @@
 package service
 
 import (
-	"os"
+	"net/http"
+	"strings"
+	"time"
 
+	"github.com/flowqio/flowqlet/config"
 	log "github.com/sirupsen/logrus"
 )
 
 func init() {
-	InitLog()
+
 	log.Debug("Clear Scheduler start success")
 	LoadInstanceFromDisk()
 	go func() {
 		watch()
 	}()
-}
-
-func InitLog() {
-	if debug := os.Getenv("DEBUG"); debug != "" {
-		log.SetLevel(log.DebugLevel)
-	}
-
-	log.SetFormatter(&log.TextFormatter{FullTimestamp: true, TimestampFormat: "2006-01-02 15:04:05"})
 }
 
 var updateServerEndpoint = ""
@@ -30,4 +25,33 @@ func UpdateServerEndpoint(endpoint ...string) string {
 		updateServerEndpoint = endpoint[0]
 	}
 	return updateServerEndpoint
+}
+
+func InitFlowqlet(nodeConf *config.FlowqletConfig) {
+
+	nodeConfig = nodeConf
+
+	InitEtcdClient(nodeConf.EtcdURL)
+
+	UpdateServerEndpoint(nodeConf.UpdateServer)
+
+	//go service.OnBoard(*token, *nodeID, fmt.Sprintf("%s:%d", *host, *port))
+
+	go OnBoard(nodeConf.Token, nodeConf.NodeID, nodeConf.Addr)
+
+	srv := &http.Server{
+		Addr: nodeConf.Addr,
+		// Good practice: enforce timeouts for servers you create!
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+
+	log.Infof("flowqlet-%s listen at %s ", nodeConf.NodeID, nodeConf.Addr)
+	if nodeConf.UpdateServer != "" {
+		log.Printf("UpdateServer: %s", nodeConf.UpdateServer)
+	}
+	if len(nodeConf.Label) > 0 {
+		log.Printf("Label: %s", strings.Join(nodeConf.Label, ","))
+	}
+	log.Fatal(srv.ListenAndServe())
 }
