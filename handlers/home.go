@@ -9,6 +9,5 @@ import (
 func Index(w http.ResponseWriter, r *http.Request) {
 
 	ServerJSON(w, map[string]interface{}{"status": "ok", "version": version.VersionInfo()})
-	return
 
 }
