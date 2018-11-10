@@ -150,8 +150,12 @@ func PrepareVolume(uid string) bool {
 
 		option := volume.VolumesCreateBody{}
 		option.Name = uid //name
-		//option.Driver = "rexray/s3fs" //Driver
-
+		//Driver
+		if nodeConfig.VolumeDriver == "s3" {
+			option.Driver = "rexray/s3fs"
+		} else {
+			option.Driver = "local"
+		}
 		_, err := c.VolumeCreate(context.Background(), option)
 		if err != nil {
 			log.Println(err)
