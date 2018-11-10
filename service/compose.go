@@ -3,8 +3,6 @@ package service
 import (
 	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
 	"os"
 	"strings"
 	"time"
@@ -15,6 +13,8 @@ import (
 	"github.com/docker/libcompose/docker/ctx"
 	"github.com/docker/libcompose/project"
 	"github.com/docker/libcompose/project/options"
+
+	log "github.com/sirupsen/logrus"
 )
 
 //ComposeUP used create and run container
@@ -59,7 +59,13 @@ func ComposeUP(oid, scenario string, parameter ...map[string]string) ([]*Instanc
 	duration, _ := time.ParseDuration(instanceMaxLive) //instanceMaxLive最大生命周期
 
 	for idx := range containers {
-		instance := &Instance{ID: containers[idx].ID, Name: containers[idx].Name, CreatedAt: now, ExpiresAt: now.Add(duration), OID: oid, ScenarioName: scenario, ExposePorts: exposePorts(containers[idx].Ports)}
+
+		log.Debugf("Container Information : [%d]\n %v \n", idx, containers[idx])
+		hostname := containers[idx].ID
+		if containers[idx].Hostname != "" {
+			hostname = containers[idx].Hostname
+		}
+		instance := &Instance{ID: containers[idx].ID, Name: containers[idx].Name, Hostname: hostname, CreatedAt: now, ExpiresAt: now.Add(duration), OID: oid, ScenarioName: scenario, ExposePorts: exposePorts(containers[idx].Ports)}
 		_instances = append(_instances, instance)
 		if _, ok := instances[oid]; !ok {
 			instances[oid] = make(map[string]*Instance)
@@ -147,42 +153,6 @@ func ScenarioIsExits(scenario string) bool {
 		return false
 	}
 	return true
-}
-
-func UpdateScenarioFile(scenario string) error {
-	timeFormat := "200601021504"
-	ts := time.Now().Format(timeFormat)
-	scenarioPath := configPath(scenario)
-
-	if UpdateServerEndpoint() == "" {
-
-		return fmt.Errorf("need setup update server ")
-	}
-	//back scenario
-	err := os.Rename(scenarioPath, scenarioPath+"."+ts)
-	if err != nil {
-		return err
-	}
-
-	out, err := os.Create(scenarioPath)
-	if err != nil {
-		return err
-	}
-	defer out.Close()
-	resource := fmt.Sprintf(UpdateServerEndpoint()+"/%s/docker-compose.yml", scenario)
-	resp, err := http.Get(resource)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-	// Write the body to file
-	_, err = io.Copy(out, resp.Body)
-	if err != nil {
-		return err
-	}
-
-	return nil
-
 }
 
 func exposePorts(raw string) []string {
