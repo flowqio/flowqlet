@@ -17,6 +17,8 @@ package version
 import (
 	"encoding/json"
 	"fmt"
+
+	"github.com/mgutz/ansi"
 )
 
 const Version = "0.1.2"
@@ -38,4 +40,24 @@ func PrintVersionInfo() {
 
 	data, _ := json.MarshalIndent(VersionInfo(), "", " ")
 	fmt.Println(string(data))
+}
+
+//PrintBanner print Flowq banner information
+func PrintBanner() {
+
+	//print welcome message use ansi/color Green
+	phosphorize := ansi.ColorFunc("green+h")
+
+	fmt.Print(phosphorize(` ________  __                           ______  ` + "\n\r"))
+	fmt.Print(phosphorize(`/        |/  |                         /      \ ` + "\n\r"))
+	fmt.Print(phosphorize(`########/ ## |  ______   __   __   __ /######  |` + "\n\r"))
+	fmt.Print(phosphorize(`## |__    ## | /      \ /  | /  | /  |## |  ## |` + "\n\r"))
+	fmt.Print(phosphorize(`##    |   ## |/######  |## | ## | ## |## |  ## |` + "\n\r"))
+	fmt.Print(phosphorize(`#####/    ## |## |  ## |## | ## | ## |## |_ ## |` + "\n\r"))
+	fmt.Print(phosphorize(`## |      ## |## \__## |## \_## \_## |## / \## |` + "\n\r"))
+	fmt.Print(phosphorize(`## |      ## |##    ##/ ##   ##   ##/ ## ## ## |` + "\n\r"))
+	fmt.Print(phosphorize(`##/       ##/  ######/   #####/####/   ######  |` + "\n\r"))
+	fmt.Print(phosphorize(`                                           ###/ ` + "\n\r"))
+	fmt.Print(phosphorize(`                              flowqlet ver ` + Version + " \n\r"))
+
 }
