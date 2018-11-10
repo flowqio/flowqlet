@@ -16,7 +16,7 @@ fi
 
 
 help () {
-   echo "./test.sh start|stop <scenario name>"
+   echo "./test.sh e2e|start|stop <scenario name>"
    exit
 }
 
@@ -50,6 +50,12 @@ if [ -z "$2" ]; then
     exit
 fi
 
+if [ "$1" == "e2e" ]; then
+        start $2
+        sleep 2
+        stop  $2
+	exit
+fi
 
 if [ "$1" == "start" ]; then
         start $2
