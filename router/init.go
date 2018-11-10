@@ -38,26 +38,24 @@ func InitRouter() *mux.Router {
 	r.HandleFunc("/", handlers.Index).Methods("GET")
 
 	//Middleware config
-	//r.Use(handlers.SignCheck)
-	//r.Use(handlers.GZip)
 
 	//API Subrouter
 	api := r.PathPrefix("/api/v1").Subrouter()
 
 	api.HandleFunc("", handlers.APIVersion).Methods("GET")
 
-	//instances REST
+	//node information read-only
+	api.HandleFunc("/node", handlers.NodeInfo).Methods("GET")
+
+	//instances REST API
 	api.HandleFunc("/instances", handlers.GetInstance).Methods("GET")
 	api.HandleFunc("/instance/{oid}", handlers.GetInstance).Methods("GET")
 
 	api.HandleFunc("/instance/{oid}/{sid}", handlers.ComposeUP).Methods("POST")
 	api.HandleFunc("/instance/{oid}/{sid}", handlers.ComposeDown).Methods("DELETE")
 
+	//scenario REST API  (update)
 	api.HandleFunc("/scenario/{sid}", handlers.UpdateScenario).Methods("PUT")
-
-	//old code
-	//api.HandleFunc("/instance/{oid}", handlers.CreateInstance).Methods("POST")
-	//api.HandleFunc("/instance/{oid}/{cid}", handlers.ClearInstance).Methods("DELETE")
 
 	//not found handler
 	r.NotFoundHandler = http.HandlerFunc(handlers.NotFound)
