@@ -96,8 +96,6 @@ func OnBoard(token string, nodeID string, letInfo string) error {
 				log.Error("keep alive channel closed")
 				OnBoard(token, nodeID, letInfo)
 				return nil
-			} else {
-				log.Debugf("Recv reply from service: %s, ttl:%d", nodeID, ka.TTL)
 			}
 		}
 	}
