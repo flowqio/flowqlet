@@ -27,22 +27,31 @@ const Vendor = "flowq.io"
 
 const Server = "flowqlet"
 
-func VersionInfo() map[string]string {
 
-	apiInfo := make(map[string]string)
-	apiInfo["version"] = Version
+var apiInfo = make(map[string]string)
+
+func init(){
+    
+    apiInfo["version"] = Version
 	apiInfo["server"] = Server
 	apiInfo["vendor"] = Vendor
-	return apiInfo
+	
 }
 
+//VersionInfo return version information
+func VersionInfo() map[string]string {
+	 return apiInfo
+}
+
+
+//PrintVersionInfo print version verbose
 func PrintVersionInfo() {
 
 	data, _ := json.MarshalIndent(VersionInfo(), "", " ")
 	fmt.Println(string(data))
 }
 
-//PrintBanner print Flowq banner information
+//PrintBanner print flowqlet banner use ansi color
 func PrintBanner() {
 
 	//print welcome message use ansi/color Green
@@ -59,5 +68,5 @@ func PrintBanner() {
 	fmt.Print(phosphorize(`##/       ##/  ######/   #####/####/   ######  |` + "\n\r"))
 	fmt.Print(phosphorize(`                                           ###/ ` + "\n\r"))
 	fmt.Print(phosphorize(`                              flowqlet ver ` + Version + " \n\r"))
-
+	fmt.Println(" ")
 }
