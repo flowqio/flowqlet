@@ -1,12 +1,15 @@
 package config
 
 import (
+	"os"
 	"flag"
 	"fmt"
 	"net"
 	"strings"
+	"github.com/flowqio/flowqlet/version"
 )
 
+//FlowqletConfig is config struct 
 type FlowqletConfig struct {
 	NodeID       string   `json:"nodeID,omitempty"`
 	Addr         string   `json:"addr,omitempty"`
@@ -19,21 +22,31 @@ type FlowqletConfig struct {
 
 var nodeConfig *FlowqletConfig
 
+//NodeConfig return *nodeConfig FlowletConfig
 func NodeConfig() FlowqletConfig {
 	return *nodeConfig
 }
+
+//InitFlag init service used FlowqletConfig
 func InitFlag() (*FlowqletConfig, error) {
 
+    //all flag include host, port , nodeID,token,etcdEndpoint,updateserver,volumeDriver
 	host := flag.String("host", "localhost", "listen address")
 	port := flag.Int("port", 8800, "listen port")
 	nodeID := flag.String("nodeID", "env1", "nodeID")
 	token := flag.String("token", "", "join token")
 	etcdEndpoint := flag.String("etcdURL", "127.0.0.1:2379", "etcd endporint")
-	updateserver := flag.String("updateServer", "", "update web server endporint")
+	updateServer := flag.String("updateServer", "", "update web server endporint")
 	volumeDriver := flag.String("volumeDriver", "local", "volume driver support local|s3")
 	label := flag.String("label", "", "label")
+	_version:=flag.Bool("version",false,"show version")
 
 	flag.Parse()
+
+	if *_version {
+		version.PrintVersionInfo()
+		os.Exit(-1)
+	}
 
 	var err error
 
@@ -47,7 +60,7 @@ func InitFlag() (*FlowqletConfig, error) {
 		return nil, err
 	}
 
-	nodeConfig, err = NewFlowqletConfig(*nodeID, tcpAddr.String(), *token, *etcdEndpoint, *updateserver, *volumeDriver, *label)
+	nodeConfig, err = NewFlowqletConfig(*nodeID, tcpAddr.String(), *token, *etcdEndpoint, *updateServer, *volumeDriver, *label)
 	if err != nil {
 		return nil, err
 	}
