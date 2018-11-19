@@ -13,14 +13,16 @@ import (
 
 func main() {
 
-	//print version
-	version.PrintBanner()
 
 	//init flag config
 	conf, err := config.InitFlag()
+
 	if err != nil {
 		log.Fatal(err)
 	}
+	
+	//print version
+	version.PrintBanner()
 
 	//init service
 	service.InitFlowqlet(conf)
